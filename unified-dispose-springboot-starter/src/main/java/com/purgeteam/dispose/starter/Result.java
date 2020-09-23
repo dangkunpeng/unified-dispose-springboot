@@ -1,5 +1,6 @@
 package com.purgeteam.dispose.starter;
 
+import com.purgeteam.dispose.starter.constants.ResultEnum;
 import com.purgeteam.dispose.starter.exception.error.CommonErrorCode;
 import com.purgeteam.dispose.starter.utils.MyJSON;
 
@@ -94,6 +95,8 @@ public class Result<T> implements Serializable {
     public static Result ofSuccess() {
         Result result = new Result();
         result.succ = true;
+        result.code = ResultEnum.SUCCESS.getCode();
+        result.msg = ResultEnum.SUCCESS.getMsg();
         return result;
     }
 
