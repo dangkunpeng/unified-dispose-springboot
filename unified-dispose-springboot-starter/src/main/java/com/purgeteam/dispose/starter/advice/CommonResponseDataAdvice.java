@@ -1,9 +1,9 @@
 package com.purgeteam.dispose.starter.advice;
 
-import com.alibaba.fastjson.JSON;
 import com.purgeteam.dispose.starter.GlobalDefaultProperties;
 import com.purgeteam.dispose.starter.Result;
 import com.purgeteam.dispose.starter.annotation.IgnoreResponseAdvice;
+import com.purgeteam.dispose.starter.utils.MyJSON;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -41,15 +41,13 @@ public class CommonResponseDataAdvice implements ResponseBodyAdvice<Object> {
     public Object beforeBodyWrite(Object o, MethodParameter methodParameter, MediaType mediaType,
                                   Class<? extends HttpMessageConverter<?>> aClass, ServerHttpRequest serverHttpRequest,
                                   ServerHttpResponse serverHttpResponse) {
-
         // 返回值为 Object 类型  并且返回为空是  AbstractMessageConverterMethodProcessor#writeWithMessageConverters 方法
         // 无法触发调用本类的 beforeBodyWrite 处理，开发在 Controller 尽量避免直接使用 Object 类型返回。
-
         // o is null -> return response
         if (o == null) {
             // 当 o 返回类型为 string 并且为null会出现 java.lang.ClassCastException: Result cannot be cast to java.lang.String
             if (methodParameter.getParameterType().getName().equals("java.lang.String")) {
-                return JSON.toJSON(Result.ofSuccess()).toString();
+                return MyJSON.JSON2Str(Result.ofSuccess());
             }
             return Result.ofSuccess();
         }
@@ -59,7 +57,7 @@ public class CommonResponseDataAdvice implements ResponseBodyAdvice<Object> {
         }
         // string 特殊处理 java.lang.ClassCastException: Result cannot be cast to java.lang.String
         if (o instanceof String) {
-            return JSON.toJSON(Result.ofSuccess(o)).toString();
+            return MyJSON.JSON2Str(Result.ofSuccess(o));
         }
         return Result.ofSuccess(o);
     }

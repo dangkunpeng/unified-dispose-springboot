@@ -17,7 +17,6 @@
     <properties>
         <maven.deploy.skip>false</maven.deploy.skip>
 
-        <alibaba-fastjson.version>1.2.59</alibaba-fastjson.version>
         <javaee-api.version>8.0</javaee-api.version>
         <ribbon-core.version>2.7.17</ribbon-core.version>
         <feign-core.version>10.4.0</feign-core.version>
@@ -46,12 +45,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>${alibaba-fastjson.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>io.github.openfeign</groupId>
             <artifactId>feign-core</artifactId>
             <version>${feign-core.version}</version>
@@ -67,6 +60,10 @@
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
             <version>${javaee-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
         </dependency>
 
     </dependencies>

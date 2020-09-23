@@ -1,11 +1,11 @@
 package com.purgeteam.dispose.starter;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.purgeteam.dispose.starter.exception.error.CommonErrorCode;
+import com.purgeteam.dispose.starter.utils.MyJSON;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 返回统一数据结构
@@ -98,8 +98,7 @@ public class Result<T> implements Serializable {
     }
 
     public static Result ofSuccess(Object data) {
-        Result result = new Result();
-        result.succ = true;
+        Result result = ofSuccess();
         result.setData(data);
         return result;
     }
@@ -113,33 +112,26 @@ public class Result<T> implements Serializable {
     }
 
     public static Result ofFail(String code, String msg, Object data) {
-        Result result = new Result();
-        result.succ = false;
-        result.code = code;
-        result.msg = msg;
+        Result result = ofFail(code, msg);
         result.setData(data);
         return result;
     }
 
     public static Result ofFail(CommonErrorCode resultEnum) {
-        Result result = new Result();
-        result.succ = false;
-        result.code = resultEnum.getCode();
-        result.msg = resultEnum.getMessage();
-        return result;
+        return ofFail(resultEnum.getCode(), resultEnum.getMessage());
     }
 
     /**
      * 获取 json
      */
     public String buildResultJson() {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("succ", this.succ);
-        jsonObject.put("code", this.code);
-        jsonObject.put("ts", this.ts);
-        jsonObject.put("msg", this.msg);
-        jsonObject.put("data", this.data);
-        return JSON.toJSONString(jsonObject, SerializerFeature.DisableCircularReferenceDetect);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("succ", this.succ);
+        map.put("code", this.code);
+        map.put("ts", this.ts);
+        map.put("msg", this.msg);
+        map.put("data", this.data);
+        return MyJSON.JSON2Str(map);
     }
 
     @Override
